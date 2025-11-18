@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: CuentasBancariasCucumber
+  profiles:
+    active: test
+
+
