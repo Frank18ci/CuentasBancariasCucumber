@@ -12,8 +12,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import java.util.Map;
-
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,13 +33,8 @@ public class AccountSteps {
         RestAssured.reset();
     }
 
-    private String client;
-    private Double initialAmount;
-
     @Given("que existe una cuenta de {string} con saldo {double}")
     public void existeAccount(String client, Double amount) {
-        this.client = client;
-        this.initialAmount = amount;
     }
 
     @When("consulto el saldo de {string}")
