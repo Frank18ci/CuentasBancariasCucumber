@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,22 +17,18 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
 
     @Override
+    @Transactional
     public Double depositBalance(String client, Double amount) {
         if(client.isBlank()){
             throw new RuntimeException("Client name cannot be blank");
         }
         log.info("Starting deposit of {} for client {}", amount, client);
-        try{
-            Account account = accountRepository.findByClientIgnoreCase(client).orElseThrow(
+        Account account = accountRepository.findByClientIgnoreCase(client).orElseThrow(
                     () -> new RuntimeException("Account not found for client: " + client)
-            );
-            account.setBalance(account.getBalance() + amount);
-            this.accountRepository.save(account);
-            return account.getBalance();
-        } catch(Exception e){
-            log.error("Error during deposit of {} for client {}", amount, client, e);
-            return 0.0;
-        }
+        );
+        account.setBalance(account.getBalance() + amount);
+        this.accountRepository.save(account);
+        return account.getBalance();
     }
 
     @Override
